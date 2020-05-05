@@ -7,25 +7,25 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="/public_html/css/main.css">
+	<link rel="stylesheet" href="{$css_path}/main.css">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <!-- go to favicon-generator.org, generate a favicon there and place it in /public_html/img/icon -->
-	<link rel="apple-touch-icon" sizes="57x57" href="/public_html/img/icon/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="/public_html/img/icon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/public_html/img/icon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/public_html/img/icon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/public_html/img/icon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/public_html/img/icon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/public_html/img/icon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/public_html/img/icon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/public_html/img/icon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/public_html/img/icon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/public_html/img/icon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/public_html/img/icon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/public_html/img/icon/favicon-16x16.png">
-    <link rel="manifest" href="/public_html/img/icon/manifest.json">
+	<link rel="apple-touch-icon" sizes="57x57" href="{$icon_path}/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="{$icon_path}/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="{$icon_path}/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="{$icon_path}/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="{$icon_path}/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="{$icon_path}/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="{$icon_path}/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="{$icon_path}/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="{$icon_path}/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{$icon_path}/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{$icon_path}/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="{$icon_path}/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{$icon_path}/favicon-16x16.png">
+    <link rel="manifest" href="{$icon_path}/manifest.json">
 	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="/public_html/img/icon/ms-icon-144x144.png">
+	<meta name="msapplication-TileImage" content="{$icon_path}/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 	{literal}
 	<script src="https://api-maps.yandex.ru/2.1/?apikey=525928f3-86fc-41c4-b200-51ae5d1d8253&lang=ru_RU" type="text/javascript">
@@ -68,8 +68,8 @@
 	  
 	<!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; width:100%; z-index: 100">
-      <a class="navbar-brand" href="/">
-      <img src="/public_html/img/icon/android-icon-36x36.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <a class="navbar-brand" href="/postman">
+      <img src="{$icon_path}/android-icon-36x36.png" width="30" height="30" class="d-inline-block align-top" alt="">
       {$name}
 	  </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,22 +79,14 @@
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
 			
-        {section name=navs loop=$nav}
-		<li class="nav-item">
-		  <a class="nav-link" href="{$nav[navs].link}" id="bigMenu{$smarty.section.navs.index}"><i class="{$nav[navs].badge}" 
-		  {if $page eq $smarty.section.navs.index}
-		  style="color:#007bff"
-		  {/if}
-		  > {$nav[navs].name}</i></a>
-		</li>
-		{/section}
+        
           
         </ul>
        </div>
 	  
 	<div id="daysInARow" class="progress" data-offset="40,20" data-toggle="dropdown" aria-expanded="false" style ="position: absolute; right: 15px; top: 8px; height: 40px; width: 90px; z-index: 1000;">
       <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-		  <span style ="position:absolute; left: 13px;  color: gray; font-size: 20px; font-weight: 700;" id="daysInARowSpan"></span>
+		  <span style ="position:absolute; left: 13px;  color: gray; font-size: 20px; font-weight: 700;" id="daysInARowSpan">{$sum}</span>
 	  </div>
     </div>
     
@@ -133,7 +125,7 @@
 					
 					
 		
-        {elseif $current_route == 1}
+        {elseif $page eq "current_route"}
         
 			Ваш текущий маршрут <br />
 			<div id="mapx" style="width: 100%; height: 400px; margin-bottom: 50px"></div>
@@ -158,7 +150,11 @@
 			
 			
 			{/section}
+			
 			</div>
+			<form action="" method="POST">
+				<input type="submit" name="delete_route" class="btn btn-danger" value="Удалить маршрут">
+			</form>
 		{elseif $page eq "mapcoordinates"}
 		<div id="map" style="width: 100%; height: 400px; margin-bottom: 50px"></div>
 		{literal} 
@@ -346,14 +342,78 @@ coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{lite
         map = new ymaps.Map('mapx', {
             center: mapCenter,
             zoom: 9,
-            controls: []
+            controls: ['smallMapDefaultSet']
         }),
         // Возможные значения цветов иконок.
         placemarkColors = [
             '#FF1F1F', '#1F44FF', '#1FFF8E', '#FF1FF5',
             '#FFEF1F', '#FF931F', '#AE6961', '#6193AE'
         ];
-        
+    
+    {/literal}
+		{section name=polyline loop=$routes_polylines}
+	{literal}
+	
+	var myPolyline{/literal}{$smarty.section.polyline.index}{literal} = new ymaps.Polyline({/literal}{$routes_polylines[polyline]}{literal}, {
+            // Описываем свойства геообъекта.
+            // Содержимое балуна.
+            balloonContent: "Ломаная линия"
+        }, {
+            // Задаем опции геообъекта.
+            // Отключаем кнопку закрытия балуна.
+            balloonCloseButton: true,
+            // Цвет линии.
+            strokeColor: '#ff0000',
+			strokeWidth: 5
+        });
+        map.geoObjects.add(myPolyline{/literal}{$smarty.section.polyline.index}{literal});
+
+	{/literal}
+		{/section}
+	{literal}
+	
+	firstButton = new ymaps.control.Button("Линия");
+	map.controls.add(firstButton, {float: 'right'});
+	firstButton.events.add('click', function (e) {
+		var polyline = new ymaps.Polyline([], {}, {
+			strokeColor: '#ff0000',
+			strokeWidth: 5 // ширина линии
+		});
+		map.geoObjects.add(polyline);
+		polyline.editor.startEditing();	
+		polyline.editor.startDrawing();	
+		firstButton.events.add('click', function (e) {
+			polyline.editor.stopEditing();
+			printGeometry(polyline.geometry.getCoordinates());
+			firstButton.events.add('click', function (e) {
+				var polyline = new ymaps.Polyline([], {}, {
+					strokeColor: '#ff0000',
+					strokeWidth: 5 // ширина линии
+				});
+				polyline.editor.startDrawing();	
+				map.geoObjects.add(polyline);
+				polyline.editor.startEditing();	
+			});
+		});
+	});
+	
+	
+	$('#stopEditPolyline').attr('disabled', false);
+ 
+            // Обработка нажатия на любую кнопку.
+    $('#stopEditPolyline').click(function () {
+		// Отключаем кнопки, чтобы на карту нельзя было
+		// добавить более одного редактируемого объекта (чтобы в них не запутаться).
+		$('#stopEditPolyline').attr('disabled', true);
+
+		
+
+	});	
+ 
+      
+	
+	
+    
     // Создаем собственный макет с информацией о выбранном геообъекте.
     var customItemContentLayout = ymaps.templateLayoutFactory.createClass(
         // Флаг "raw" означает, что данные вставляют "как есть" без экранирования html.
@@ -397,7 +457,7 @@ coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{lite
     map.geoObjects.add(clusterer);
 
     function getColor(i) {
-		var status = markersArray[i][4];
+		//var status = markersArray[i][4];
 		return "#007bff";
 		/*
 		if(status == 0){
@@ -416,8 +476,7 @@ coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{lite
     
     var placemarkBodies;
     function getContentBody (i) {
-		//<button type="button" class="btn-sm btn btn-outline-primary">Primary</button>
-        return '<button type="button" id="s1i' + i + '" class="btn-sm btn btn-outline-warning" onclick="updateStatus(1, ' + i + ')">Извещение</button><button type="button" id="s2i' + i + '" class="btn-sm btn btn-outline-success" onclick="updateStatus(2, ' + i + ')">Вручено</button><button type="button" id="s3i' + i + '" class="btn-sm btn btn-outline-danger" onclick="updateStatus(3, ' + i + ')">Неверный адрес</button><button type="button" id="s4i' + i + '" class="btn-sm btn btn-outline-secondary" onclick="updateStatus(4, ' + i + ')">Другое</button>';
+		return '<button type="button" class="btn-sm btn btn-outline-warning" onclick="updateStatus(1, ' + i + ')">Извещение</button><button type="button" id="s2i' + i + '" class="btn-sm btn btn-outline-success" onclick="updateStatus(2, ' + i + ')">Вручено</button><button type="button" id="s3i' + i + '" class="btn-sm btn btn-outline-danger" onclick="updateStatus(3, ' + i + ')">Неверный адрес</button><button type="button" id="s4i' + i + '" class="btn-sm btn btn-outline-secondary" onclick="updateStatus(4, ' + i + ')">Другое</button>';
     }
     //clusterer.balloon.open(clusterer.getClusters()[0]);
 });
@@ -426,7 +485,6 @@ function updateStatus(status, i){
 	if (status == 1){
 		$('#pill' + i).attr('class', 'badge badge-warning badge-pill');
 		$('#pill' + i).text('извещение');
-		$('#s1i' + i).attr('class', 'btn btn-warning');
 	} else if (status == 2){
 		$('#pill' + i).attr('class', 'badge badge-success badge-pill');
 		$('#pill' + i).text('вручено');
@@ -440,18 +498,49 @@ function updateStatus(status, i){
 	var id = markersArray[i][5];
 	$.ajax({
             type: "POST",
-            url: "updateStatus.php",
-            data: {status:status, id:id  }, 
-            /*success: function(data){
-                $('#success_message').fadeIn().html(data);
-				setTimeout(function() {
-                    $('#success_message').fadeOut("slow");
-                }, 2000 );
+            url: "resources/updateStatus.php",
+            data: {status:status, id:id, route:{/literal}{$route}{literal}, user:{/literal}{$user}{literal}  }, 
+            success: function(data){
+                $('#daysInARowSpan').text(data);
             }
-            */
     });
     
 }
+
+function printGeometry (coords) {
+            $.ajax({
+				type: "POST",
+				url: "resources/sendPolyline.php",
+				data: {coordinates: stringify(coords), route:{/literal}{$route}{literal}, user:{/literal}{$user}{literal}  }, 
+				/*success: function(data){
+					$('#geometry').text(data);
+				},
+				error: function(data){
+					$('#geometry').text(data);
+				}
+				*/
+			});
+ 
+            function stringify (coords) {
+                var res = '';
+                if ($.isArray(coords)) {
+                    res = '[ ';
+                    for (var i = 0, l = coords.length; i < l; i++) {
+                        if (i > 0) {
+                            res += ', ';
+                        }
+                        res += stringify(coords[i]);
+                    }
+                    res += ' ]';
+                } else if (typeof coords == 'number') {
+                    res = coords.toPrecision(6);
+                } else if (coords.toString) {
+                    res = coords.toString();
+                }
+ 
+                return res;
+            }
+		}
 	
     </script>
     {/literal}
