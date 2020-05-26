@@ -68,7 +68,7 @@
 	  
 	<!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position:fixed; width:100%; z-index: 100">
-      <a class="navbar-brand" href="/postman">
+      <a class="navbar-brand" href="/post">
       <img src="{$icon_path}/android-icon-36x36.png" width="30" height="30" class="d-inline-block align-top" alt="">
       {$name}
 	  </a>
@@ -93,7 +93,7 @@
 	<div class="btn-group">
 	
 	  <div class="dropdown-menu dropdown-menu-right" style="margin-top:30px" >
-		<a href="profile.php" class="dropdown-item">Профиль</a>
+		<button class="dropdown-item" type="button">Профиль</button>
 		<button class="dropdown-item" type="button">Настройки</button>
 		<a href="logout.php" class="dropdown-item">Выйти</a>
 	  </div>
@@ -111,11 +111,11 @@
 			<form action="" method="post">
 			<div class="form-group">
 				<label for="exampleFormControlTextarea1">Вставьте текст в формате "670000, Россия, г. Улан-Удэ, ул. Борсоева, 73, кв. 50 ШПИ 82050000369760"</a></label>
-				<textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="3"></textarea>
+				<textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="3">{$assign[0]}</textarea>
 			  </div>
 			<div class="form-group">
 				<label for="exampleFormControlTextarea1">Вставьте адресатов</a></label>
-				<textarea class="form-control" id="exampleFormControlTextarea1" name="addressee" rows="3"></textarea>
+				<textarea class="form-control" id="exampleFormControlTextarea1" name="addressee" rows="3">{$assign[1]}</textarea>
 			  </div>
 			  <input class="full-width has-padding" type="submit" name="send" value="Отправить">
 	    
@@ -125,36 +125,62 @@
 					
 					
 		
-        {elseif $page eq "current_route"}
-        
-			Ваш текущий маршрут <br />
-			<div id="mapx" style="width: 100%; height: 400px; margin-bottom: 50px"></div>
-			<div class="card-columns">
-			  
+        {elseif $p eq "current_route"}Ваш текущий маршрут<br />
+			<div id="mapx" style="width: 100%; height: 400px; margin-bottom: 20px"></div>
+			
+			{if $page eq "edit"}
+			<div class="alert alert-danger" role="alert">
+			  Вы на странице редактирования. Здесь можно перемещать метки, если на них адрес указан неправильно.
+			</div>
+			{/if}
+			<form action="" method="POST">
+				<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Адреса</a>
+				{if $page eq "edit"}
+				<a class="btn btn-warning" href="/post/">Вернуться</a>
+				{else}
+				<a class="btn btn-warning" href="index.php?p=edit">Изменить</a>
+				{/if}
+				<input type="submit" onclick="return confirm('Вы уверенны?')" name="delete_route" class="btn btn-danger" value="Удалить маршрут">
+				{if $page eq "me"}
+					<button class="btn btn-primary" onclick="finish_other()">Отметить</button>
+				{/if}
+			</form>
+  <div class="collapse" id="collapseExample">
+			<div class="row">
 			{section name=address loop=$user_route_addresses}
-			<div class="card">
-				<ul class="list-group list-group-flush">
-						<li class="list-group-item d-flex justify-content-between align-items-center">{$smarty.section.address.index + 1} - 
-	{$user_route_addresses[address].street} - {$user_route_addresses[address].building} - {$user_route_addresses[address].apartment} - {$user_route_addresses[address].addressee}
-					
+			<div class="col-md">
+				<div class="card" style="min-width: 15rem; margin-top: 5px">
+					<div class="card-body">
+						<h6 class="card-title"><b><span style="font-size:15px" class="badge badge-dark"> {$smarty.section.address.index + 1}</span> 
+	{$user_route_addresses[address].street} {$user_route_addresses[address].building}{if $user_route_addresses[address].apartment eq ''}{else}, кв. {$user_route_addresses[address].apartment} {/if} </b>
+	
+	<p class="card-text"> {$user_route_addresses[address].addressee}
+			<br> <span style="color:gray" id="savedNote{$smarty.section.address.index}">{$user_route_addresses[address].note}</span>
+	</p>
 			{if $user_route_addresses[address].status eq 0} <span id=pill{$smarty.section.address.index} class="badge badge-primary badge-pill">на руках</span>
 			{elseif $user_route_addresses[address].status eq 1} <span id=pill{$smarty.section.address.index} class="badge badge-warning badge-pill">извещение</span>
 			{elseif $user_route_addresses[address].status eq 2} <span id=pill{$smarty.section.address.index} class="badge badge-success badge-pill">вручено</span>
 			{elseif $user_route_addresses[address].status eq 3} <span id=pill{$smarty.section.address.index} class="badge badge-danger badge-pill">неверный адрес</span>
 			{elseif $user_route_addresses[address].status eq 4} <span id=pill{$smarty.section.address.index} class="badge badge-secondary badge-pill">другое</span>
+			{elseif $user_route_addresses[address].status eq 5} <span id=pill{$smarty.section.address.index} class="badge badge-warning badge-pill">извещение - дверь</span>
+			{elseif $user_route_addresses[address].status eq 6} <span id=pill{$smarty.section.address.index} class="badge badge-warning badge-pill">извещение - ПЯ</span>
+			{elseif $user_route_addresses[address].status eq 7} <span id=pill{$smarty.section.address.index} class="badge badge-warning badge-pill">извещение - знакомому</span>
+			{elseif $user_route_addresses[address].status eq 4} <span id=pill{$smarty.section.address.index} class="badge badge-warning badge-pill">извещение - вахта</span>
 			{/if}
-					</li>
-				</ul>
-			  </div>
+		</div>
+		</div>
+		</div>
 			
 			
 			
 			{/section}
 			
 			</div>
-			<form action="" method="POST">
-				<input type="submit" name="delete_route" class="btn btn-danger" value="Удалить маршрут">
-			</form>
+			</div>
+		
+		
+		
+		
 		{elseif $page eq "mapcoordinates"}
 		<div id="map" style="width: 100%; height: 400px; margin-bottom: 50px"></div>
 		{literal} 
@@ -241,15 +267,17 @@ function init() {
 		  {literal}
 		  
 	  }
-	  
+	  setTimeout(function(){ 
+		  $('#form').append('<input type="submit" name="sendCoordinates" class="btn btn-success" value="Продолжить">');
+		  $('#spinner').hide();
+		   }, 5000);
 	  </script>
     {/literal}
 		  Добавление координат
 			<form id = "form" action="" method="post">
-				
-				
-				
-				<input type="submit" name="sendCoordinates" class="btn btn-success" value="Продолжить">
+				<div class="spinner-border m-5" role="status" id="spinner">
+				  <span class="sr-only">Loading...</span>
+				</div>
 			</form>
 		
 		{elseif $page eq "correction"}
@@ -268,7 +296,7 @@ function init() {
 				</div>
 						<div class="col-auto">
 						  <label class="sr-only" for="inlineFormInputGroup">Username</label>
-						  <input name="building[]" type="text" class="form-control mb-2" id="inlineFormInputGroup" style="width: 60px;" value={$streets[street].other}>
+						  <input name="building[]" type="text" class="form-control mb-2" id="inlineFormInputGroup" style="width: 60px;" value={$streets[street].building}>
 						</div>
 						<div class="col-auto">
 						  <label class="sr-only" for="inlineFormInputFlat">Username</label>
@@ -276,7 +304,7 @@ function init() {
 							<div class="input-group-prepend">
 							  <div class="input-group-text">кв.</div>
 							</div>
-							<input name="apartment[]" type="text" class="form-control" id="inlineFormInputFlat" style="width: 60px;">
+							<input name="apartment[]" type="text" class="form-control" id="inlineFormInputFlat" style="width: 60px;" value={$streets[street].apartment}>
 							<input name="addressee[]" type="text" class="form-control" id="inlineFormInputAddressee" style="display:none;" value="{$streets[street].addressee}">
 						  </div>
 						</div>
@@ -298,8 +326,6 @@ function init() {
 			</div>
 		{/if}
     </div>
-    
-    
     
     
     
@@ -332,7 +358,7 @@ var markersArray = [];
 		{section name=address loop=$user_route_addresses}
 	{literal}
 	
-markersArray.push( ["{/literal}{$user_route_addresses[address].street}{literal}", "{/literal}{$user_route_addresses[address].building}{literal}", "{/literal}{$user_route_addresses[address].apartment}{literal}", "{/literal}{$user_route_addresses[address].addressee}{literal}", "{/literal}{$user_route_addresses[address].status}{literal}", "{/literal}{$user_route_addresses[address].id}{literal}"]);
+markersArray.push( ["{/literal}{$user_route_addresses[address].street}{literal}", "{/literal}{$user_route_addresses[address].building}{literal}", "{/literal}{$user_route_addresses[address].apartment}{literal}", "{/literal}{$user_route_addresses[address].addressee}{literal}", "{/literal}{$user_route_addresses[address].status}{literal}", "{/literal}{$user_route_addresses[address].id}{literal}", "{/literal}{$user_route_addresses[address].note}{literal}"]);
 coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{literal}, {/literal}{$user_route_addresses[address].longitude}{literal}]);
      {/literal}
 		{/section}
@@ -354,10 +380,10 @@ coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{lite
 		{section name=polyline loop=$routes_polylines}
 	{literal}
 	
-	var myPolyline{/literal}{$smarty.section.polyline.index}{literal} = new ymaps.Polyline({/literal}{$routes_polylines[polyline]}{literal}, {
+	var myPolyline{/literal}{$smarty.section.polyline.index}{literal} = new ymaps.Polyline({/literal}{$routes_polylines[polyline].coordinates}{literal}, {
             // Описываем свойства геообъекта.
             // Содержимое балуна.
-            balloonContent: "Ломаная линия"
+            balloonContent: "Ломаная линия <button onclick='delete_polyline({/literal}{$routes_polylines[polyline].id}{literal})'>Удалить</button>"
         }, {
             // Задаем опции геообъекта.
             // Отключаем кнопку закрытия балуна.
@@ -435,22 +461,47 @@ coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{lite
         // В данном примере балун никогда не будет открываться в режиме панели.
         clusterBalloonPanelMaxMapArea: 0,
         // Устанавливаем размеры макета контента балуна (в пикселях).
-        clusterBalloonContentLayoutWidth: 250,
-        clusterBalloonContentLayoutHeight: 200,
+        clusterBalloonContentLayoutWidth: 270,
+        clusterBalloonContentLayoutHeight: 230,
     });
     
     // Заполняем кластер геообъектами со случайными позициями.
+    
+	
     var placemarks = [];
     for (var i = 0; i < coordinatesArray.length; i++) {
+		var adri = markersArray[i][0] + ' ' + markersArray[i][1];
+		if (markersArray[i][2] != ''){
+			adri += ', кв. ' + markersArray[i][2];
+		}
         var placemark = new ymaps.Placemark(coordinatesArray[i], {
-            // Устаналиваем данные, которые будут отображаться в балуне.
-            balloonContentHeader: '<a class="myLink" href="#">' + (i + 1) + ' ' + markersArray[i][0] + ' ' + markersArray[i][1] + ', кв. ' + markersArray[i][2] + '</a>',
+            balloonContentHeader: '<a class="myLink" href="#"><span style="font-size:18px" class="badge badge-dark">' + (i + 1) + '</span> ' + adri + '</a>',
             balloonContentBody: getContentBody(i),
-            balloonContentFooter: markersArray[i][3]
+            balloonContentFooter: '',
+            id: markersArray[i][5]
         }, {
             iconColor: getColor(i)
+			{/literal}
+				{if $page eq "edit"}
+			{literal}, 
+			draggable: true 
+			
+			{/literal} {/if} {literal}
         });
+        
+        placemark.events.add('dragend', function (e) {
+			var coords = e.get('target').geometry.getCoordinates();
+			var px = coords[1].toPrecision(9);
+			var py = coords[0].toPrecision(9);
+			var pid = e.get('target').properties.get('id');
+			updateLocation(pid, px, py);
+		});
+		
+		
+		
+            
         placemarks.push(placemark);
+        
     }
     
     clusterer.add(placemarks);
@@ -476,24 +527,73 @@ coordinatesArray.push( [{/literal}{$user_route_addresses[address].latitude}{lite
     
     var placemarkBodies;
     function getContentBody (i) {
-		return '<button type="button" class="btn-sm btn btn-outline-warning" onclick="updateStatus(1, ' + i + ')">Извещение</button><button type="button" id="s2i' + i + '" class="btn-sm btn btn-outline-success" onclick="updateStatus(2, ' + i + ')">Вручено</button><button type="button" id="s3i' + i + '" class="btn-sm btn btn-outline-danger" onclick="updateStatus(3, ' + i + ')">Неверный адрес</button><button type="button" id="s4i' + i + '" class="btn-sm btn btn-outline-secondary" onclick="updateStatus(4, ' + i + ')">Другое</button>';
+		return markersArray[i][3] + '<br><button class="btn-sm btn btn-outline-warning" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">\
+    Извещение\
+  </button>\
+  \
+		<div class="collapse" id="collapseExample3">\
+<button type="button" id="s5i' + i + '" class="btn-sm btn btn-outline-info" onclick="updateStatus(5, ' + i + ')">Дверь</button>\
+<button type="button" id="s6i' + i + '" class="btn-sm btn btn-outline-info" onclick="updateStatus(6, ' + i + ')">ПЯ</button>\
+<button type="button" id="s7i' + i + '" class="btn-sm btn btn-outline-info" onclick="updateStatus(7, ' + i + ')">Знакомому</button>\
+<button type="button" id="s8i' + i + '" class="btn-sm btn btn-outline-info" onclick="updateStatus(8, ' + i + ')">Вахта</button>\
+<button type="button" id="s1i' + i + '" class="btn-sm btn btn-outline-info" onclick="updateStatus(1, ' + i + ')">Другое</button>\
+</div>\
+		\
+<button type="button" id="s2i' + i + '" class="btn-sm btn btn-outline-success" onclick="updateStatus(2, ' + i + ')">Вручено</button>\
+		<button type="button" id="s3i' + i + '" class="btn-sm btn btn-outline-danger" onclick="updateStatus(3, ' + i + ')">Неверный адрес</button>\
+		<button type="button" id="s4i' + i + '" class="btn-sm btn btn-outline-secondary" onclick="updateStatus(4, ' + i + ')">Другое</button>\
+		\
+		<div class="form-inline">\
+		<div class="form-group mx-sm-3 mb-2" style="margin:1px!important">\
+			<label for="inputPassword2" class="sr-only">Password</label>\
+			<input type="text" class="form-control" id="note' + i + '" placeholder="Заметка" style="width:189px" value="' + markersArray[i][6] + '">\
+		</div>\
+		<button class="btn btn-primary mb-2" style="margin:1px!important" onclick="saveNote(' + i + ')"><i class="fas fa-save"></i></button>\
+		\
+</div>\
+		';
     }
     //clusterer.balloon.open(clusterer.getClusters()[0]);
+    submenu.appendTo($('body'));
+    map.setBounds(map.geoObjects.getBounds());
 });
 
 function updateStatus(status, i){
-	if (status == 1){
+	switch (status) {
+	  case 1:
 		$('#pill' + i).attr('class', 'badge badge-warning badge-pill');
 		$('#pill' + i).text('извещение');
-	} else if (status == 2){
-		$('#pill' + i).attr('class', 'badge badge-success badge-pill');
-		$('#pill' + i).text('вручено');
-	} else if (status == 3){
+		break;
+	  case 2:
+		$('#pill' + i).attr('class', 'badge badge-warning badge-pill');
+		$('#pill' + i).text('извещение');
+		break;
+	  case 3:
 		$('#pill' + i).attr('class', 'badge badge-danger badge-pill');
 		$('#pill' + i).text('неверный адрес');
-	} else if (status == 4){
+		break;
+	  case 4:
 		$('#pill' + i).attr('class', 'badge badge-secondary badge-pill');
 		$('#pill' + i).text('другое');
+		break;
+	  case 5:
+	    $('#pill' + i).attr('class', 'badge badge-warning badge-pill');
+		$('#pill' + i).text('извещение - дверь');
+		break;
+	  case 6:
+	    $('#pill' + i).attr('class', 'badge badge-warning badge-pill');
+		$('#pill' + i).text('извещение - ПЯ');
+		break;
+	  case 7:
+	    $('#pill' + i).attr('class', 'badge badge-warning badge-pill');
+		$('#pill' + i).text('извещение - знакомому');
+		break;
+	  case 8:
+	    $('#pill' + i).attr('class', 'badge badge-warning badge-pill');
+		$('#pill' + i).text('извещение - вахта');
+		break;
+	  default:
+		console.log(`Sorry, we are out of ${expr}.`);
 	}
 	var id = markersArray[i][5];
 	$.ajax({
@@ -501,10 +601,75 @@ function updateStatus(status, i){
             url: "resources/updateStatus.php",
             data: {status:status, id:id, route:{/literal}{$route}{literal}, user:{/literal}{$user}{literal}  }, 
             success: function(data){
-                $('#daysInARowSpan').text(data);
+                $('#daysInARowSpan').text(data + ' р');
             }
     });
     
+}
+
+function updateLocation(id, x, y){
+	$.ajax({
+		type: "POST",
+		url: "resources/updateLocation.php",
+		data: {id: id, x: x, y: y}, 
+		success: function(data){
+			//location.reload(true);
+		},
+		error: function(data){
+			$('#geox').val(data);
+		}
+		
+	});
+}
+
+function delete_polyline(id) {
+	$.ajax({
+		type: "POST",
+		url: "resources/deletePolyline.php",
+		data: {id: id}, 
+		success: function(data){
+			location.reload(true);
+		},
+		error: function(data){
+			$('#geometry').text(data);
+		}
+		
+	});
+}
+
+function finish_other () {
+	$.ajax({
+		type: "POST",
+		url: "resources/finish_other.php",
+		data: {route:{/literal}{$route}{literal}, user:{/literal}{$user}{literal} }, 
+		success: function(data){
+			location.reload(true);
+		},
+		error: function(data){
+			$('#geometry').text(data);
+		}
+		
+	});
+}
+
+function saveNote(i) {
+	var id = markersArray[i][5];
+	var note = $('#note' + i).val();
+	$('#savedNote' + i).text(note);
+	$.ajax({
+		type: "POST",
+		url: "resources/saveNote.php",
+		data: {id: id, note: note}, 
+		/*
+		success: function(data){
+			$('body').text(data);
+		},
+		error: function(data){
+			$('body').text(data);
+		}
+		*/
+		
+	});
 }
 
 function printGeometry (coords) {
@@ -533,7 +698,7 @@ function printGeometry (coords) {
                     }
                     res += ' ]';
                 } else if (typeof coords == 'number') {
-                    res = coords.toPrecision(6);
+                    res = coords.toString();
                 } else if (coords.toString) {
                     res = coords.toString();
                 }
@@ -546,7 +711,3 @@ function printGeometry (coords) {
     {/literal}
     </body>
 </html>
-
-
-    
-  
